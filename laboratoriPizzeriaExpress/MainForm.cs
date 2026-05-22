@@ -1,9 +1,4 @@
-﻿﻿/*
- * Pizzería Campus Express - Gestión de pedidos con Queue y Stack
- * Compatible con SharpDevelop 4.4 / .NET Framework 2.0+
- */
-
-using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 

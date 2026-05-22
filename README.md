@@ -57,9 +57,18 @@ Trabajas en el sistema de una pizzería universitaria:
 
 ## ❓ Preguntas de Comprensión (Obligatorias en el PR)
 1. ¿Por qué un sistema de delivery usa `Queue` para los pedidos pero `Stack` para la bitácora? ¿Qué problema surgiría si invertimos las estructuras?
+R: Porque el Queue es un sistema FIFO (First In First Out) y el Stack es un sistema LIFO (Last In First Out). Es decir que al manejar pedidos, los necesitan manejar en orden, el primero que entra es el primero que tiene que ser entregado, en cambio con las bitácoras, deben tener la posibilidad de reescribir o eliminar el ultimo registro realizado.
+
 2. ¿Por qué es obligatorio verificar `Count == 0` antes de `Dequeue()` o `Pop()`? ¿Qué ocurre en ejecución si se omite?
+R: Porque Dequeue() y Pop() son estructuras dinamicas, al intentar sacar algo de la cola y esta esta vacia daria error, entonces al no hacer el Count == 0 y la estructura esta vacia el programa se crashea. Por eso es importante la validacion
+
 3. En el método `Deshacer`, ¿por qué es necesario analizar el texto con `.StartsWith()` antes de revertir? ¿Qué error lógico evitaría esto?
+R: El método Deshacer necesita identificar qué tipo de acción se va a revertir leyendo el comando guardado en el historial. Al utilizar el método StartsWith(), el sistema puede identificar mediante un prefijo o palabra clave (por ejemplo: "INSERT:", "DELETE:") el cual era la accion que se acababa de realizar.
+Error lógico que evita: Evita aplicar la reversión incorrecta
+
 4. ¿Qué ventaja tiene entregar mediante Fork + Pull Request en lugar de un archivo comprimido? ¿Cómo facilita la la retroalimentación?
+R: Al hacer Fork + Pull hace que se copie el archivo sin perdidas ni archivos corruptos, tanto de commits como lineas de codigo, cosa que puede suceder al descargar el archivo .zip
+Cómo facilita la retroalimentación: La persona que evalue este archivo puede revisar los cambios linea por linea y dejar notas o sugerencias. En caso de haber un error, el estudiante puede corregir y hacer un push subiendo los cambios sin neesidad de comprimir y enviar un archivo distinto .zip.
 
 ## ✅ Checklist de Entrega
 - [ ] Código compila en SharpDevelop sin warnings críticos

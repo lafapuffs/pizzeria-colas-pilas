@@ -1,13 +1,7 @@
-﻿/*
- * Created by SharpDevelop.
- * User: jdcad
- * Date: 22/5/2026
- * Time: 3:17 a. m.
- * 
- * To change this template use Tools | Options | Coding | Edit Standard Headers.
- */
-using System;
+﻿using System;
 using System.Windows.Forms;
+using laboratoriPizzeriaCampusExpress;
+using laboratoriPizzeriaExpress;
 
 namespace laboratoriPizzeriaExpress
 {
