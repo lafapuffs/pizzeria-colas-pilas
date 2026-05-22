@@ -8,6 +8,7 @@ namespace laboratoriPizzeriaCampusExpress
     {
         // Colecciones principales: FIFO para pedidos, LIFO para bitácora
         private Queue<string> colaPedidos = new Queue<string>();
+        private Queue<string> colaPedidosPremium = new Queue<string>();
         private Stack<string> pilaBitacora = new Stack<string>();
 
         public MainForm()
@@ -27,32 +28,49 @@ namespace laboratoriPizzeriaCampusExpress
                 lblEstado.Text = string.Format("⚠️ Debe ingresar un nombre de cliente.");
                 return;
             }
+            if (cliente.StartsWith("premium")){
+                colaPedidosPremium.Enqueue(cliente);
+                pilaBitacora.Push(string.Format("PEDIDO PREMIUM: {0}", cliente));
+        		lblEstado.Text = string.Format("⭐ Pedido PREMIUM registrado para {0}", cliente);
+                }
+            else{
+            
 
             // Agregar a la cola
             colaPedidos.Enqueue(cliente);
 
             // Registrar en la pila
             pilaBitacora.Push(string.Format("PEDIDO: {0}", cliente));
-
+            }
             // Limpiar campo y actualizar
             txtCliente.Clear();
             lblEstado.Text = string.Format("✅ Pedido registrado para {0}", cliente);
             ActualizarUI();
+        
         }
 
         // PASO 2: Entregar pedido (FIFO salida)
         private void BtnEntregar_Click(object sender, EventArgs e)
         {
-            if (colaPedidos.Count == 0)
+            if (colaPedidos.Count == 0 && colaPedidosPremium.Count == 0)
             {
                 lblEstado.Text = string.Format("❌ No hay pedidos pendientes.");
                 return;
             }
+            
+            if (colaPedidosPremium.Count > 0){
+          		string cliente = colaPedidosPremium.Dequeue();
+            	pilaBitacora.Push(string.Format("ENTREGADO: {0}", cliente));
+           		 lblEstado.Text = string.Format("🍕 Pedido PREMIUM entregado a {0}", cliente);
+           		 ActualizarUI();
+            }
+            else{
 
             string cliente = colaPedidos.Dequeue();
             pilaBitacora.Push(string.Format("ENTREGADO: {0}", cliente));
             lblEstado.Text = string.Format("🍕 Pedido entregado a {0}", cliente);
             ActualizarUI();
+        }
         }
 
         // PASO 3: Deshacer última acción (LIFO + lógica de reversión)
@@ -111,11 +129,17 @@ namespace laboratoriPizzeriaCampusExpress
             // Limpiar listas visuales
             lstPedidos.Items.Clear();
             lstBitacora.Items.Clear();
+            
+            // Mostrar cola de pedidos PREMIUM
+	        foreach (string p in colaPedidosPremium)
+	    	{
+      		  lstPedidos.Items.Add("[⭐ PREMIUM] " + p);
+    		}
 
             // Mostrar cola de pedidos
             foreach (string p in colaPedidos)
                 lstPedidos.Items.Add(p);
-            if (colaPedidos.Count == 0)
+            if (colaPedidos.Count == 0 && colaPedidosPremium.Count == 0)
                 lstPedidos.Items.Add("(Sin pedidos pendientes)");
 
             // Mostrar bitácora (pila)
@@ -125,8 +149,8 @@ namespace laboratoriPizzeriaCampusExpress
                 lstBitacora.Items.Add("(Sin acciones registradas)");
 
             // Actualizar contador
-            lblContador.Text = string.Format("Pedidos: {0} | Bitácora: {1}",
-                colaPedidos.Count, pilaBitacora.Count);
+            int totalPedidos = colaPedidos.Count + colaPedidosPremium.Count;
+   			lblContador.Text = string.Format("Pedidos: {0} | Bitácora: {1}", totalPedidos, pilaBitacora.Count);
         }
     }
 }
